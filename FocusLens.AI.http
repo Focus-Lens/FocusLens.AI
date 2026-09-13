@@ -1,0 +1,6 @@
+@FocusLens.AI_HostAddress = http://localhost:5248
+
+GET {{FocusLens.AI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
