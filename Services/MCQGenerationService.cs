@@ -53,6 +53,7 @@ public class MCQGenerationService
         9. Use the provided sectionId for every question.
         10. Use the provided conceptId for every question.
         11. Do not duplicate questions.
+        12. estimatedTimeMinutes must be a positive integer representing the expected time to answer this question.
 
         Return ONLY valid JSON.
 
@@ -67,6 +68,7 @@ public class MCQGenerationService
         conceptId
         difficulty
         explanation
+        estimatedTimeMinutes
 
         Do not add markdown code fences.
         Do not add explanations outside the JSON.
@@ -84,7 +86,17 @@ public class MCQGenerationService
 
         var response = await _geminiService.GenerateAsync(prompt);
 
-        return ParseGeminiResponse(response);
+        MCQGenerationResult result = ParseGeminiResponse(response);
+
+        foreach (MCQQuestion question in result.Questions)
+        {
+            question.SectionId = request.SectionId;
+            question.SectionTitle = request.SectionTitle;
+            question.ConceptId = request.ConceptId;
+            question.ConceptName = request.ConceptName;
+        }
+
+        return result;
     }
 
     private static MCQGenerationResult ParseGeminiResponse(

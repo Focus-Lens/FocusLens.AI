@@ -12,4 +12,7 @@ public class AIProcessingResult
 
     [JsonPropertyName("content")]
     public ContentAnalysisResult? Content { get; set; }
+
+    [JsonPropertyName("extractedText")]
+    public string ExtractedText { get; set; } = string.Empty;
 }

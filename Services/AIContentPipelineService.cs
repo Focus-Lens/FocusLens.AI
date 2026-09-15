@@ -40,7 +40,8 @@ public class AIContentPipelineService
         {
             Status = "success",
             InputType = inputResult.InputType,
-            Content = analysisResult
+            Content = analysisResult,
+            ExtractedText = inputResult.Text
         };
     }
 }

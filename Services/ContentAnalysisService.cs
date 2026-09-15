@@ -31,6 +31,7 @@ public class ContentAnalysisService
         3. Key learning points for each concept.
         4. Difficulty of each section and concept: easy, medium, or hard.
         5. Estimated study time in minutes for each concept and section.
+        6. The first and last page containing each section.
 
         Generate a unique sectionId for every section.
         Generate a unique conceptId for every concept.
@@ -46,6 +47,9 @@ public class ContentAnalysisService
         - sectionId values must be unique.
         - conceptId values must be unique.
         - Every concept must belong to exactly one section.
+        - fromPage and toPage must refer to the [Page N] markers in the supplied content.
+        - Page numbers are relative to this supplied PDF, beginning at 1.
+        - fromPage must be at least 1 and toPage must be greater than or equal to fromPage.
 
         Return ONLY valid JSON.
         Do not add markdown code fences.
@@ -59,6 +63,8 @@ public class ContentAnalysisService
         title
         difficulty
         estimatedTimeMinutes
+        fromPage
+        toPage
         concepts
 
         Each concept must contain:
@@ -132,11 +138,24 @@ public class ContentAnalysisService
                         "Failed to deserialize content analysis result.");
                 }
 
+                ValidatePageRanges(result);
                 return result;
             }
         }
 
         throw new InvalidOperationException(
             "No model output text was found in Gemini response.");
+    }
+
+    private static void ValidatePageRanges(ContentAnalysisResult result)
+    {
+        foreach (ContentSection section in result.Sections)
+        {
+            if (section.FromPage < 1 || section.ToPage < section.FromPage)
+            {
+                throw new InvalidOperationException(
+                    $"AI section '{section.Title}' has an invalid page range.");
+            }
+        }
     }
 }

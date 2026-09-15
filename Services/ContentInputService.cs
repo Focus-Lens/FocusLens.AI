@@ -97,6 +97,7 @@ public class ContentInputService
 
         foreach (var page in document.GetPages())
         {
+            text.AppendLine($"[Page {page.Number}]");
             text.AppendLine(page.Text);
         }
 

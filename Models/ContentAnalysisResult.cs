@@ -24,6 +24,13 @@ public class ContentSection
 
     [JsonPropertyName("estimatedTimeMinutes")]
     public int EstimatedTimeMinutes { get; set; }
+
+    // Page numbers are relative to the PDF supplied to the AI service.
+    [JsonPropertyName("fromPage")]
+    public int FromPage { get; set; }
+
+    [JsonPropertyName("toPage")]
+    public int ToPage { get; set; }
 }
 
 public class ContentConcept

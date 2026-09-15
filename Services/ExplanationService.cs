@@ -25,6 +25,16 @@ public class ExplanationService
             throw new ArgumentException("ConceptId is required.");
         }
 
+        if (string.IsNullOrWhiteSpace(request.SectionTitle))
+        {
+            throw new ArgumentException("SectionTitle is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.ConceptName))
+        {
+            throw new ArgumentException("ConceptName is required.");
+        }
+
         if (string.IsNullOrWhiteSpace(request.Content))
         {
             throw new ArgumentException("Content is required.");
@@ -36,6 +46,12 @@ public class ExplanationService
         Use ONLY the provided educational content.
 
         Explain ONLY the specified concept.
+
+        The specified section is:
+        {request.SectionTitle}
+
+        The specified concept is:
+        {request.ConceptName}
 
         Requirements:
         1. Use simple, student-friendly language.
@@ -49,9 +65,11 @@ public class ExplanationService
 
         Return ONLY valid JSON.
 
-        The JSON must contain these three fields:
+        The JSON must contain these five fields:
         sectionId
+        sectionTitle
         conceptId
+        conceptName
         explanation
 
         Do not add markdown code fences.
@@ -60,8 +78,14 @@ public class ExplanationService
         SectionId:
         {request.SectionId}
 
+        SectionTitle:
+        {request.SectionTitle}
+
         ConceptId:
         {request.ConceptId}
+
+        ConceptName:
+        {request.ConceptName}
 
         Educational content:
         {request.Content}
@@ -119,7 +143,9 @@ public class ExplanationService
                 }
 
                 if (string.IsNullOrWhiteSpace(result.SectionId) ||
+                    string.IsNullOrWhiteSpace(result.SectionTitle) ||
                     string.IsNullOrWhiteSpace(result.ConceptId) ||
+                    string.IsNullOrWhiteSpace(result.ConceptName) ||
                     string.IsNullOrWhiteSpace(result.Explanation))
                 {
                     throw new InvalidOperationException(
