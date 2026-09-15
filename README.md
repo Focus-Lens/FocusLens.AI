@@ -366,6 +366,42 @@ http://localhost:5248
 
 ---
 
+# Deployment
+
+The repository includes a production-ready `Dockerfile`. Deploy it on any
+container host with these settings:
+
+- Container port: `8080`
+- Health check path: `/health`
+- Required secret: `Gemini__ApiKey`
+
+ASP.NET Core maps the environment variable `Gemini__ApiKey` to the
+`Gemini:ApiKey` configuration entry. Keep this value in the hosting provider's
+secret manager; do not add it to `appsettings.json` or commit it to Git.
+
+Example local container run:
+
+```bash
+docker build -t focuslens-ai .
+docker run --rm -p 8080:8080 \
+  -e Gemini__ApiKey="YOUR_API_KEY" \
+  focuslens-ai
+```
+
+Verify the deployed service with:
+
+```bash
+curl https://YOUR-SERVICE-URL/health
+```
+
+Expected response:
+
+```json
+{"status":"healthy"}
+```
+
+---
+
 # AI Design Principles
 
 FocusLens AI follows:

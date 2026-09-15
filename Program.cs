@@ -16,6 +16,7 @@ builder.Services.AddScoped<ExplanationService>();
 var app = builder.Build();
 
 app.MapGet("/", () => "FocusLens AI is running!");
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
 
 app.MapGet("/test-gemini", async (GeminiService geminiService) =>
 {
